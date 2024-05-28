@@ -7,6 +7,10 @@ class ArraySequence : public Sequence<T> {
     private:
         DynamicArray<T> baseArray;
     public:
+        ArraySequence<T>* copiedList () {
+            ArraySequence<T> * newList = new ArraySequence<T>(*this);
+            return newList;
+        }
         ArraySequence(const ArraySequence<T>& array) {
             this->baseArray = array.baseArray;
         }

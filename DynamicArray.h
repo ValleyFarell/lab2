@@ -57,7 +57,7 @@ class DynamicArray {
 
         T Get(size_t index) const {
             if (index < 0 || index >= size)
-                throw out_of_range("Dolbaeb!");
+                throw out_of_range("Uncorrect index!");
 
             return elements[index];
         }
@@ -68,7 +68,7 @@ class DynamicArray {
 
         void Set(size_t index, T value) {
             if (index < 0 || index >= size)
-                throw out_of_range("Dolbaeb!");
+                throw out_of_range("Uncorrect index!");
             elements[index] = value;
         }
 

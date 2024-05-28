@@ -7,10 +7,15 @@ class ListSequence : public Sequence<T> {
     private:
         LinkedList<T> listBase;
     public:
+        ListSequence<T> * copiedList () {
+            ListSequence<T> * newList = new ListSequence<T>(*this);
+            return newList;
+        }
         ListSequence(const ListSequence<T> & list) {
             this->listBase = list.listBase;
         }
         ListSequence (T* items, size_t count) {
+            if (count <= 0) throw out_of_range("Size is wrong!");
             listBase = LinkedList<T>(items, count);
         }
         ListSequence() {
@@ -25,10 +30,13 @@ class ListSequence : public Sequence<T> {
         }
 
         T Get(size_t index) {
+            if (index <= 0 || index >= this->GetLength()) throw out_of_range("Uncorrect index!");
             return listBase.Get(index);
         }
 
         ListSequence<T> *GetSubsequence(int startIndex, int endIndex) {
+            if (startIndex <= 0 || endIndex >= this->GetLength() || \
+            endIndex <= 0 || startIndex >= this->GetLength()) throw out_of_range("Uncorrect indexes!");
             LinkedList<T> *newList = this->listBase.GetSubList(startIndex, endIndex);
             ListSequence<T> *newSeq = new ListSequence<T>;
             newSeq->listBase = *newList;
@@ -50,6 +58,7 @@ class ListSequence : public Sequence<T> {
         }
 
         Sequence<T>*InsertAt(T item, int index) {
+            if (index <= 0 || index >= this->GetLength()) throw out_of_range("Uncorrect index!");
             listBase.InsertAt(item, index);
             return this;
         }

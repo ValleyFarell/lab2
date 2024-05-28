@@ -145,7 +145,7 @@ class LinkedList {
 
         T& operator [] (size_t index) const {
             if (index >= this->size)
-                throw out_of_range("Dolbaeb!");
+                throw out_of_range("Uncorrect index!");
             Node* current = this->head;
             for (size_t i = 0; i != index; ++i) {
                 current = current->next;
