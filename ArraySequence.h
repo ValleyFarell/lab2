@@ -28,13 +28,13 @@ class ArraySequence : public Sequence<T> {
             return baseArray.Get(0);
         }
         T GetLast() {
-            return baseArray.Get(baseArray.GetSize());
+            return baseArray.Get(baseArray.GetSize() - 1);
         }
         T Get(size_t index) {
             return baseArray.Get(index);
         }
-        Sequence<T>* GetSubsequence(int startIndex, int endIndex) {
-            ArraySequence<T>* newSeq = new ArraySequence<T>;
+        ArraySequence<T>* GetSubsequence(int startIndex, int endIndex) {
+            ArraySequence<T>* newSeq = new ArraySequence<T>(endIndex - startIndex);
             newSeq->baseArray = *(this->baseArray.GetSubArray(startIndex, endIndex));
             return newSeq;
         }
@@ -42,12 +42,20 @@ class ArraySequence : public Sequence<T> {
             return baseArray.GetSize();
         }
 
+        Sequence<T>*Set(size_t index, T item) {
+            baseArray.Set(index,item);
+            return this;
+        }
+
         Sequence<T>*Append(T item) {
             baseArray.Resize(baseArray.GetSize() + 1);
             baseArray.Set(baseArray.GetSize() - 1, item);
             return this;
         }
-
+        Sequence<T>*Append(size_t index, T item) {
+            baseArray.Set(index, item);
+            return this;
+        }
         Sequence<T>*Prepend(T item) {
             this->InsertAt(item, 0);
             return this;

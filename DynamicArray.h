@@ -1,4 +1,5 @@
 #include<exception>
+#include<string.h>
 using namespace std;
 
 template<class T>
@@ -10,7 +11,7 @@ class DynamicArray {
     public:
         DynamicArray(T* items, size_t count) {
             if (count <= 0)
-                throw out_of_range("Dolbaeb!");
+                throw out_of_range("Wrong size!");
 
             elements = new T[count * 2];
             size = count;
@@ -33,7 +34,7 @@ class DynamicArray {
         }
         DynamicArray(size_t size) {
             if (size <= 0) 
-                throw out_of_range("Dolbaeb!");
+                throw out_of_range("Wrong size!");
 
             elements = new T[size];
             this->size = size;
@@ -97,8 +98,8 @@ class DynamicArray {
             if (startIndex < 0 || endIndex >= this->size || (endIndex < startIndex))
                 throw out_of_range("Index out of range!");
             DynamicArray<T> *newArray = new DynamicArray<T>(endIndex - startIndex);
-            for (size_t i = startIndex; i < endIndex; ++i) {
-                newArray->Set(i, this->Get(i));
+            for (size_t i = 0; i != endIndex - startIndex; ++i) {
+                newArray->Set(i, this->Get(i + startIndex));
             }
             return newArray;
         }

@@ -39,6 +39,12 @@ class LinkedList {
                 (*this).Append(items[i]);
             }
         }
+        LinkedList (int count) {
+            this->size = 0;
+            for (size_t i = 0; i != count; ++i) {
+                (*this).Append(0);
+            }
+        }
         /* Копировать элементы из переданного массива */
         LinkedList(std::initializer_list<T> items)
         {
@@ -54,6 +60,12 @@ class LinkedList {
                 this->Append(tmp);
             }
         }
+        ~LinkedList() {
+            this->Clear();
+            this->head = nullptr;
+            this->tail = nullptr;
+        }
+
         /* Получить первый элемент в списке */
         T GetFirst() {
             return head->value;
@@ -132,6 +144,15 @@ class LinkedList {
             }
             current->value = item;
         }
+        void Set(T item, int index) {
+            if (index < 0 || index >= this->size)
+                throw out_of_range("Uncorrect indexes!");
+            Node* current = this->tail;
+            for (size_t i = this->GetLength() - 1; i != index; --i) {
+                current = current->prev;
+            }
+            current->value = item;
+        }
         /* Сцепляет два списка */
         LinkedList<T> Concat(const LinkedList<T> &list) {
             // LinkedList<T> newList = *this;
@@ -142,6 +163,21 @@ class LinkedList {
             tail->next = list.head;
             return *this;
         }
+
+        void PopFront() {
+            Node* tmp = this->head;
+            this->head = this->head->next;
+            delete tmp;
+            this->size--;
+        }
+
+        void Clear() {
+            Node* curr = this->head;
+            int size = static_cast<int>(this->size);
+            for (int i = 0; i < size; ++i) {
+                this->PopFront();
+            }
+        }       
 
         T& operator [] (size_t index) const {
             if (index >= this->size)
