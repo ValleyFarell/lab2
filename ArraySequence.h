@@ -6,6 +6,7 @@ template<class T>
 class ArraySequence : public Sequence<T> {
     private:
         DynamicArray<T> baseArray;
+        size_t capacity;
     public:
         ArraySequence<T>* copiedList () {
             ArraySequence<T> * newList = new ArraySequence<T>(*this);
@@ -13,6 +14,7 @@ class ArraySequence : public Sequence<T> {
         }
         ArraySequence(const ArraySequence<T>& array) {
             this->baseArray = array.baseArray;
+            this->capacity = array.GetLength();
         }
         ArraySequence(T* items, size_t count) {
             DynamicArray<T> tmpArr(items, count);
@@ -48,12 +50,9 @@ class ArraySequence : public Sequence<T> {
         }
 
         Sequence<T>*Append(T item) {
-            baseArray.Resize(baseArray.GetSize() + 1);
             baseArray.Set(baseArray.GetSize() - 1, item);
-            return this;
-        }
-        Sequence<T>*Append(size_t index, T item) {
-            baseArray.Set(index, item);
+            if (baseArray.GetSize() + 1 == capacity)
+                baseArray.Resize(baseArray.GetSize() * 2);
             return this;
         }
         Sequence<T>*Prepend(T item) {
@@ -62,10 +61,11 @@ class ArraySequence : public Sequence<T> {
         }
 
         Sequence<T>*InsertAt(T item, int index) {
-            baseArray.Resize(baseArray.GetSize() + 1);
             for (size_t i = baseArray.GetSize() - 1; i > index; --i)
                 baseArray.Set(i, baseArray.Get(i - 1));
             baseArray.Set(index, item);
+            if (baseArray.GetSize() + 1 == capacity)
+                baseArray.Resize(baseArray.GetSize() * 2);
             return this;
         }
 
